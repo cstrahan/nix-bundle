@@ -1,0 +1,86 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Nix
+scopeName: source.nix
+fileTypes: ["nix"]
+uuid: 671e7a18-04ae-44d7-8b1c-e11d9f3ef973
+
+patterns:
+- include: "#comment"
+- include: '#primitives'
+- include: "#attrset"
+- include: '#number'
+- include: "#path"
+- include: "#let"
+- include: "#string"
+- include: '#indented_string'
+- include: "#attrname"
+- include: "#operator"
+
+repository:
+  path:
+    name: string
+    match: "\\.+/[^; ]+"
+  comment:
+    name: comment
+    patterns:
+    - name: comment
+      begin: "/\\*"
+      end: "\\*/"
+    - name: comment
+      match: "#.*"
+  primitives:
+    name: keyword
+    match: (true|false|import|if|then|else|rec|inherit|null|or)
+  number:
+    name: constant.numeric
+    match: \d+
+  attrname:
+    patterns:
+    - include: '#string'
+    - name: support.variable
+      match: "(\\w|_)(\\w|\\d|_|-|')*"
+  name_bindings:
+    patterns:
+    - include: '$self'
+  attrset:
+    begin: "\\{"
+    patterns:
+    - include: '#name_bindings'
+    end: "\\}"
+  let:
+    begin: "let"
+    beginCaptures:
+      "0": { name: keyword }
+    patterns:
+    - include: '#name_bindings'
+    end: "in"
+    endCaptures:
+      "0": { name: keyword }
+  indented_string:
+    name: string
+    begin: "''"
+    patterns:
+    - name: constant.character.escape
+      match: "''('|\\\\(n|r|t)|\\$\\{)"
+    - include: '#interp'
+    end: "(?<![^']')''(?!'|\\$\\{|\\\\(n|r|t))"
+  operator:
+    name: keyword
+    match: (\?|!=?|==?|//?|\+\+?|\|\|)
+  string:
+    name: string
+    begin: \"
+    patterns:
+    - name: constant.character.escape
+      match: "\\\\."
+    - include: '#interp'
+    end: \"
+  interp: 
+    name: punctuation.section.embedded.nix
+    begin: "\\$\\{"
+    beginCaptures:
+      "0": { name: foo }
+    patterns:
+    - include: $self
+    end: "\\}"

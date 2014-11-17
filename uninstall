@@ -1,0 +1,2 @@
+#!/bin/bash
+rm "$HOME/Library/Application Support/Sublime Text 3/Packages/nix.tmLanguage"

@@ -1,0 +1,2 @@
+#!/bin/bash
+cp nix.tmLanguage "$HOME/Library/Application Support/Sublime Text 3/Packages/"
