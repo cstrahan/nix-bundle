@@ -1,2 +1,9 @@
-#!/bin/bash
-cp nix.tmLanguage "$HOME/Library/Application Support/Sublime Text 3/Packages/"
+#!/bin/sh
+
+if [[ "$(uname)" == Linux ]]; then
+  PACKAGES_DIR="$HOME/.config/sublime-text-3/Packages"
+else
+  PACKAGES_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages"
+fi
+
+cp nix.tmLanguage "$PACKAGES_DIR"
