@@ -6,4 +6,4 @@ else
   PACKAGES_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages"
 fi
 
-rm "$PACKAGES_DIR/nix.tmLanguage"
+rm -v "$PACKAGES_DIR/nix.tmLanguage"
